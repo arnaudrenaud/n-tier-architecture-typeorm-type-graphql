@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import Reservation from "../entities/Reservation";
+import TypeORMReservationRepository from "../infra/typeorm/ReservationRepository";
 
 let dataSource: DataSource;
 
@@ -8,7 +8,7 @@ export const getDataSource = async () => {
     dataSource = new DataSource({
       type: "postgres",
       url: "postgres://postgres:mysecretpassword@localhost:5433/postgres",
-      entities: [Reservation],
+      entities: [TypeORMReservationRepository],
       synchronize: true,
     });
     await dataSource.initialize();

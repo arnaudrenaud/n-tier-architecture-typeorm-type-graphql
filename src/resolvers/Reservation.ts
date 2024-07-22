@@ -1,15 +1,25 @@
 import { Args, Mutation, Query, Resolver } from "type-graphql";
-import Reservation, { CreateReservationArgs } from "../entities/Reservation";
+import ReservationUseCases from "../application/ReservationUseCases";
+import {
+  CreateReservationArgsType,
+  ReservationObjectType,
+} from "../presentation/type-graphql/ReservationObjectType";
 
-@Resolver(Reservation)
+@Resolver(ReservationObjectType)
 export class ReservationResolver {
-  @Query(() => [Reservation])
-  getReservations() {
-    return Reservation.getReservations();
+  reservationUseCases: ReservationUseCases;
+
+  constructor(reservationUseCases: ReservationUseCases) {
+    this.reservationUseCases = reservationUseCases;
   }
 
-  @Mutation(() => Reservation)
-  createReservation(@Args() args: CreateReservationArgs) {
-    return Reservation.createReservation(args);
+  @Query(() => [ReservationObjectType])
+  getReservations() {
+    return this.reservationUseCases.getReservations();
+  }
+
+  @Mutation(() => ReservationObjectType)
+  createReservation(@Args() args: CreateReservationArgsType) {
+    return this.reservationUseCases.createReservation(args);
   }
 }
